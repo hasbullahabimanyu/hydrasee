@@ -1,0 +1,39 @@
+const int GSR = A0;
+int sensorValue = 0;
+int gsr_average = 0;
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+const int oneWireBus = 4;   
+
+OneWire oneWire(oneWireBus);
+
+DallasTemperature sensors(&oneWire);
+
+void setup() {
+  Serial.begin(9600);
+  sensors.begin();
+
+}
+
+void loop() {
+  long sum = 0;
+  sensors.requestTemperatures(); 
+  float temperatureC = sensors.getTempCByIndex(0);
+  float temperatureF = sensors.getTempFByIndex(0);
+  for(int i = 0;i<10;i++)
+  {
+    sensorValue = analogRead(GSR);
+    sum += sensorValue;
+    delay(5);
+  }
+
+    gsr_average = sum/10;
+    Serial.print("gsr_average =");
+    Serial.println(gsr_average);
+    Serial.print(temperatureC);
+    Serial.println("ºC");
+    delay(5000);
+    
+
+}
